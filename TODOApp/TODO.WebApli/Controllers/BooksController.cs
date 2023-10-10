@@ -1,81 +1,123 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TODO.WebApli.Modelos;
-using TODO.WebApli.Data;
+using Microsoft.EntityFrameworkCore;
+using TODO.WebApi.Models;
 
-namespace TODO.WebApli.Controllers
+namespace TODO.WebApi.Controller
 {
-    /// <summary>
-    /// Controlador para gestionar libros.
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
-
     {
+        private readonly TODOAppDBContext _context;
 
-
-
-        private readonly ApplicationDbContext _context;
-
-        /// <summary>
-        /// Constructor del controlador de libros.
-        /// </summary>
-        /// <param name="context">Contexto de la base de datos.</param>
-        public BooksController(ApplicationDbContext context)
+        public BooksController(TODOAppDBContext context)
         {
             _context = context;
         }
 
-        /// <summary>
-        /// Obtiene la lista de todos los libros.
-        /// </summary>
-        /// <returns>Una lista de objetos Book.</returns>
+        // GET: api/Books
         [HttpGet]
-        public IActionResult GetBooks()
+        public async Task<ActionResult<IEnumerable<Books>>> GetBooks()
         {
-            // Implementa la lógica para listar libros aquí.
-            return Ok();
+          if (_context.Books == null)
+          {
+              return NotFound();
+          }
+            return await _context.Books.ToListAsync();
         }
 
-        /// <summary>
-        /// Crea un nuevo libro.
-        /// </summary>
-        /// <param name="book">Datos del nuevo libro.</param>
-        /// <returns>El libro creado.</returns>
-        [HttpPost]
-        public IActionResult CreateBook(Book book)
+        // GET: api/Books/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Books>> GetBooks(int id)
         {
-            // Implementa la lógica para crear un libro aquí.
-            return Ok();
+          if (_context.Books == null)
+          {
+              return NotFound();
+          }
+            var books = await _context.Books.FindAsync(id);
+
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            return books;
         }
 
-        /// <summary>
-        /// Actualiza un libro existente.
-        /// </summary>
-        /// <param name="id">ID del libro a actualizar.</param>
-        /// <param name="book">Nuevos datos del libro.</param>
-        /// <returns>El libro actualizado.</returns>
+        // PUT: api/Books/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, Book book)
+        public async Task<IActionResult> PutBooks(int id, Books books)
         {
-            // Implementa la lógica para actualizar un libro aquí.
-            return Ok();
+            if (id != books.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(books).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BooksExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        /// <summary>
-        /// Elimina un libro.
-        /// </summary>
-        /// <param name="id">ID del libro a eliminar.</param>
-        /// <returns>Resultado de la operación.</returns>
-        [HttpDelete("{id}")]
-        public IActionResult DeleteBook(int id)
+        // POST: api/Books
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Books>> PostBooks(Books books)
         {
-            // Implementa la lógica para eliminar un libro aquí.
-            return Ok();
+          if (_context.Books == null)
+          {
+              return Problem("Entity set 'TODOAppDBContext.Books'  is null.");
+          }
+            _context.Books.Add(books);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetBooks", new { id = books.Id }, books);
+        }
+
+        // DELETE: api/Books/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBooks(int id)
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var books = await _context.Books.FindAsync(id);
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            _context.Books.Remove(books);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool BooksExists(int id)
+        {
+            return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
-
-
-
 }
