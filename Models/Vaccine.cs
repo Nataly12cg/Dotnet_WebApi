@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class Vaccine
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int VaccineId { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public bool RequiresBooster { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual ICollection<VaccineRecord> VaccineRecords { get; set; } = new List<VaccineRecord>();
-
-    public virtual ICollection<VaccineCategory> CategoriesVaccineCategories { get; set; } = new List<VaccineCategory>();
+    public class Vaccine : BaseTable
+    {
+        public int VaccineId { get; set; }
+        public string Name { get; set; }
+        public List<VaccineCategory> Categories { get; set; }
+        public bool RequiresBooster { get; set; }
+    }
 }

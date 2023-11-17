@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class Dependent
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int DependentId { get; set; }
+    public class Dependent : BaseTable
+    {
+        public int DependentId { get; set; }
+        public string Name { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public List<VaccineRecord> VaccineRecords { get; set; }
 
-    public string Name { get; set; } = null!;
-
-    public DateTime DateOfBirth { get; set; }
-
-    public int UserId { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual User User { get; set; } = null!;
-
-    public virtual ICollection<VaccineRecord> VaccineRecords { get; set; } = new List<VaccineRecord>();
+    }
 }

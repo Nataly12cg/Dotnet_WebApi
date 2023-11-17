@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class FamilyGroup
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int FamilyGroupId { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual ICollection<User> UsersUsers { get; set; } = new List<User>();
+    public class FamilyGroup : BaseTable
+    {
+        public int FamilyGroupId { get; set; }
+        public string Name { get; set; }
+        public List<User> Users { get; set; }
+    }
 }

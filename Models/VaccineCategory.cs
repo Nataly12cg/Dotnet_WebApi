@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class VaccineCategory
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int VaccineCategoryId { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual ICollection<Vaccine> VaccinesVaccines { get; set; } = new List<Vaccine>();
+    public class VaccineCategory : BaseTable
+    {
+        public int VaccineCategoryId { get; set; }
+        public string Name { get; set; }
+        public List<Vaccine> Vaccines { get; set; }
+    }
 }

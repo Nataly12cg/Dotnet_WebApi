@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class Allergy
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int AllergyId { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public int UserId { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual User User { get; set; } = null!;
+    public class Allergy : BaseTable
+    {
+        public int AllergyId { get; set; }
+        public string Name { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+    }
 }

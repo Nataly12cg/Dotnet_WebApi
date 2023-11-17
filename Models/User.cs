@@ -1,29 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IngenieriaInversa.Models;
-
-public partial class User
+﻿namespace MyVaccine.WebApi.Models
 {
-    public int UserId { get; set; }
+    public class User : BaseTable
+    {
+        public int UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string AspNetUserId { get; set; }
+        public AplicationUser AspNetUser { get; set; }
+        public List<Dependent> Dependents { get; set; }
+        public List<FamilyGroup> FamilyGroups { get; set; }
+        public List<VaccineRecord> VaccineRecords { get; set; }
+        public List<Allergy> Allergies { get; set; }
 
-    public string LastName { get; set; } = null!;
-
-    public string FirstName { get; set; } = null!;
-
-    public string AspNetUserId { get; set; } = null!;
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
-
-    public virtual AspNetUser AspNetUser { get; set; } = null!;
-
-    public virtual ICollection<Dependent> Dependents { get; set; } = new List<Dependent>();
-
-    public virtual ICollection<VaccineRecord> VaccineRecords { get; set; } = new List<VaccineRecord>();
-
-    public virtual ICollection<FamilyGroup> FamilyGroupsFamilyGroups { get; set; } = new List<FamilyGroup>();
+    }
 }
